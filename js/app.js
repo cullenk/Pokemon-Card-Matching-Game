@@ -2,11 +2,11 @@
 
 class AudioController {
     constructor() {
-        this.bgMusic = new Audio('../Audio/pokemon-theme.mp3');
-        this.flipSound = new Audio('../Audio/flip.wav');
-        this.matchSound = new Audio('../Audio/match.mp3');
-        this.victorySound = new Audio('../Audio/victory.mp3');
-        this.gameOverSound = new Audio('../Audio/gameover.mp3');
+        this.bgMusic = document.getElementById('pokemon-theme');
+        this.flipSound = document.getElementById('flip-sound');
+        this.matchSound = document.getElementById('match-sound');
+        this.victorySound = document.getElementById('victory-sound');
+        this.gameOverSound = document.getElementById('gameover-sound');
         this.bgMusic.volume = 0.5;
         this.bgMusic.loop = true;
     }
