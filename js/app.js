@@ -1,5 +1,46 @@
 /*jshint esversion: 6 */
 
+const gameContainer = document.getElementById('game-container');
+
+// GET THE POKEMON DATA FROM THE POKEAPI
+const fetchPokemon = () => {
+  const promises = [];
+  for (let i = 1; i < 17; i++) {
+    const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+      promises.push(fetch(url)
+        .then(response => response.json()));
+    }
+
+    Promise.all(promises).then( results => {
+      const pokemon = results.map((data) => ({
+        name: data.name,
+        id: data.id,
+        image: data.sprites.front_default
+      }));
+      generatePokemonCards(pokemon);
+    });
+  };
+
+// CREATE CARDS USING THE DATA RECEIVED
+const generatePokemonCards = (pokemon) => {
+  console.log(pokemon);
+  const pokemonHTMLString = pokemon.map( pokeman => `
+    <div class="card">
+      <div class="card-back card-face">
+        <img src="img/pokeball.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="${pokeman.image}">
+      </div>
+    </div>
+    `)
+    .join(''); //the map returns an array, use join to make it a string.
+    gameContainer.innerHTML = pokemonHTMLString;
+};
+
+fetchPokemon();
+
+//CONTROL THE AUDIO ELEMENTS
 class AudioController {
     constructor() {
         this.bgMusic = document.getElementById('pokemon-theme');
@@ -33,6 +74,7 @@ class AudioController {
     }
 }
 
+// THE GAME COMPONENTS
 class PokemonMatch {
     constructor(totalTime, cards) {
         this.cardsArray = cards;
@@ -137,9 +179,10 @@ class PokemonMatch {
     }
 }
 
+//WHEN THE PAGE LOADS, CREATE A NEW GAME INSTANCE WITH THESE PARAMETERS
 function ready() {
     let overlays = Array.from(document.getElementsByClassName('overlay-text'));
-    let cards = Array.from(document.getElementsByClassName('card'));
+    let cards = document.getElementsByClassName('card');
     let game = new PokemonMatch(80, cards);
 
     overlays.forEach(overlay => {
@@ -159,4 +202,5 @@ if(document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', ready());
 } else {
     ready();
+
 }
