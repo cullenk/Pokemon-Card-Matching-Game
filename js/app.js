@@ -182,7 +182,7 @@ class PokemonMatch {
 //WHEN THE PAGE LOADS, CREATE A NEW GAME INSTANCE WITH THESE PARAMETERS
 function ready() {
     let overlays = Array.from(document.getElementsByClassName('overlay-text'));
-    let cards = document.getElementsByClassName('card');
+    let cards = Array.from(document.getElementsByClassName('card'));
     let game = new PokemonMatch(80, cards);
 
     overlays.forEach(overlay => {
