@@ -5,8 +5,9 @@ const gameContainer = document.getElementById('game-container');
 // GET THE POKEMON DATA FROM THE POKEAPI
 const fetchPokemon = () => {
   const promises = [];
-  for (let i = 1; i < 17; i++) {
-    const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+
+  for (let i = 1; i < 9; i++) {
+    const url = `https://pokeapi.co/api/v2/pokemon/` + Math.floor(Math.random() * 152 + 1);
       promises.push(fetch(url)
         .then(response => response.json()));
     }
@@ -25,6 +26,14 @@ const fetchPokemon = () => {
 const generatePokemonCards = (pokemon) => {
   console.log(pokemon);
   const pokemonHTMLString = pokemon.map( pokeman => `
+    <div class="card">
+      <div class="card-back card-face">
+        <img src="img/pokeball.png">
+      </div>
+      <div class="card-front card-face">
+        <img class="card-value" src="${pokeman.image}">
+      </div>
+    </div>
     <div class="card">
       <div class="card-back card-face">
         <img src="img/pokeball.png">
@@ -185,13 +194,16 @@ function ready() {
     let cards = Array.from(document.getElementsByClassName('card'));
     let game = new PokemonMatch(80, cards);
 
+
     overlays.forEach(overlay => {
         overlay.addEventListener('click', () => {
             overlay.classList.remove('visible');
             game.startGame();
         });
     });
+
     cards.forEach(card => {
+      console.log('working');
         card.addEventListener('click', () => {
             game.flipCard(card);
         });
@@ -202,5 +214,4 @@ if(document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', ready());
 } else {
     ready();
-
 }
