@@ -3,7 +3,7 @@
 const gameContainer = document.getElementById('game-container');
 
 // GET THE POKEMON DATA FROM THE POKEAPI
-const fetchPokemon = () => {
+const fetchPokemon = async () => {
   const promises = [];
 
   for (let i = 1; i < 9; i++) {
@@ -12,7 +12,7 @@ const fetchPokemon = () => {
         .then(response => response.json()));
     }
 
-    Promise.all(promises).then( results => {
+    await Promise.all(promises).then( results => {
       const pokemon = results.map((data) => ({
         name: data.name,
         id: data.id,
@@ -46,8 +46,6 @@ const generatePokemonCards = (pokemon) => {
     .join(''); //the map returns an array, use join to make it a string.
     gameContainer.innerHTML = pokemonHTMLString;
 };
-
-fetchPokemon();
 
 //CONTROL THE AUDIO ELEMENTS
 class AudioController {
@@ -189,7 +187,10 @@ class PokemonMatch {
 }
 
 //WHEN THE PAGE LOADS, CREATE A NEW GAME INSTANCE WITH THESE PARAMETERS
-function ready() {
+async function ready() {
+    await fetchPokemon()
+
+    console.log('all body elements', document.querySelectorAll('card'))
     let overlays = Array.from(document.getElementsByClassName('overlay-text'));
     let cards = Array.from(document.getElementsByClassName('card'));
     let game = new PokemonMatch(80, cards);
@@ -202,6 +203,8 @@ function ready() {
         });
     });
 
+    console.log('cards = ', cards)
+
     cards.forEach(card => {
       console.log('working');
         card.addEventListener('click', () => {
@@ -211,7 +214,7 @@ function ready() {
 }
 
 if(document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', ready());
+    document.addEventListener('load', ready());
 } else {
     ready();
 }
