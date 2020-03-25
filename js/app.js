@@ -7,9 +7,11 @@ const fetchPokemon = async () => {
   const promises = [];
 
   for (let i = 1; i < 9; i++) {
-    const url = `https://pokeapi.co/api/v2/pokemon/` + Math.floor(Math.random() * 152 + 1);
+    let randomIndex = Math.floor(Math.random() * 151 + 1);
+    const url = `https://pokeapi.co/api/v2/pokemon/` + randomIndex;
       promises.push(fetch(url)
-        .then(response => response.json()));
+        .then(response => response.json())
+      );
     }
 
     await Promise.all(promises).then( results => {
@@ -163,14 +165,26 @@ class PokemonMatch {
         }, 1000);
     }
     gameOver() {
+        let overlay = document.getElementById('game-over-screen');
+        let restart = document.getElementsByClassName('overlay-text-small')[0];
         clearInterval(this.countDown);
         this.audioController.gameOver();
-        document.getElementById('game-over-text').classList.add('visible');
+        document.getElementById('game-over-screen').classList.add('visible');
+        restart.addEventListener('click', () => {
+          overlay.classList.remove('visible');
+          newGame();
+        });
     }
     victory() {
-        clearInterval(this.countDown);
-        this.audioController.victory();
-        document.getElementById('victory-text').classList.add('visible');
+      let overlay = document.getElementById('victory-screen');
+      let restart = document.getElementsByClassName('overlay-text-small')[1];
+      clearInterval(this.countDown);
+      this.audioController.victory();
+      document.getElementById('victory-screen').classList.add('visible');
+      restart.addEventListener('click', () => {
+        overlay.classList.remove('visible');
+        newGame();
+      });
     }
 
     shuffleCards() {
@@ -191,17 +205,36 @@ async function ready() {
     await fetchPokemon();
 
     console.log('all body elements', document.querySelectorAll('card'));
-    let overlays = Array.from(document.getElementsByClassName('overlay-text'));
+    // let overlays = Array.from(document.getElementsByClassName('overlay-text'));
+    let overlay = document.getElementById('initial-game-screen');
     let cards = Array.from(document.getElementsByClassName('card'));
-    let game = new PokemonMatch(30, cards);
+    let game = new PokemonMatch(60, cards);
 
+    overlay.addEventListener('click', () => {
+      overlay.classList.remove('visible');
+      game.startGame();
+    });
 
-    overlays.forEach(overlay => {
-        overlay.addEventListener('click', () => {
-            overlay.classList.remove('visible');
-            game.startGame();
+    console.log('cards = ', cards);
+
+    cards.forEach(card => {
+      console.log('working');
+        card.addEventListener('click', () => {
+            game.flipCard(card);
         });
     });
+}
+
+async function newGame() {
+    await fetchPokemon();
+
+    console.log('all body elements', document.querySelectorAll('card'));
+    // let overlays = Array.from(document.getElementsByClassName('overlay-text'));
+    let overlay = document.getElementById('initial-game-screen');
+    let cards = Array.from(document.getElementsByClassName('card'));
+    let game = new PokemonMatch(60, cards);
+
+    game.startGame();
 
     console.log('cards = ', cards);
 
