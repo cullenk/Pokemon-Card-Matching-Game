@@ -151,10 +151,6 @@ img {
   transform: scale(1);
 }
 
-.card-back:hover {
-  transform: translateY(0);
-}
-
 @keyframes overlay-grow {
   from {
     background-color: rgba(0, 0, 0, 0);
