@@ -245,9 +245,9 @@ async function newGame() { //make the new game wait for the pokemon cards to be 
     });
 }
 
-window.addEventListener('load', function () {
-  loadingScreen.className += " loaderHidden";
-  ready();
+window.addEventListener('load', function () { //Wait until the page loads...
+  loadingScreen.className += " loaderHidden"; //then remove the loading loading
+  ready(); //call the readt function. 
 });
 
 // if(document.readyState === 'loading') { //If the page hasn't loaded yet...
