@@ -1,5 +1,6 @@
 /*jshint esversion: 8 */
 
+const loadingScreen = document.getElementById('loading-screen');
 const gameContainer = document.getElementById('game-container'); //Grab the game container
 
 // GET THE POKEMON DATA FROM THE POKEAPI
@@ -244,8 +245,17 @@ async function newGame() { //make the new game wait for the pokemon cards to be 
     });
 }
 
-if(document.readyState === 'loading') { //If the page hasn't laoded yet...
-    document.addEventListener('load', ready()); //finish loading the page and then call ready() function.
-} else {
-    ready(); //If it's already ready, call ready()
-}
+window.addEventListener('load', function () {
+  loadingScreen.className += " loaderHidden";
+  ready();
+});
+
+// if(document.readyState === 'loading') { //If the page hasn't loaded yet...
+//     document.addEventListener('load', function(){ // Wait until it loads and then remove the loading screen
+//       loadingScreen.classList.add('loaderHidden');
+//     },
+//     ready()); //then call the ready() function.
+// } else {
+//     loadingScreen.classList.add('loaderHidden');
+//     ready(); //If it's already ready, call ready()
+// }

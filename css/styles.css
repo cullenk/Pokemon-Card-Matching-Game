@@ -11,6 +11,39 @@ body {
   background: radial-gradient(white, navy);
 }
 
+
+#loading-screen {
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 10px;
+  position: fixed;
+  z-index: 101;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  text-align: center;
+  align-items: center;
+}
+
+.loaderHidden {
+  animation: loaderOut .5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes loaderOut {
+  100% {
+      opacity: 0;
+    }
+}
+
+.loading-text {
+  font-family: 'Anton', sans-serif;
+}
+
 .pokemon-title {
   display: flex;
   justify-content: space-around;
