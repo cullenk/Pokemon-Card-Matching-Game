@@ -30,7 +30,8 @@ body {
 }
 
 .loaderHidden {
-  animation: loaderOut .5s;
+  animation: loaderOut 1s;
+  animation-delay: 1.5s;
   animation-fill-mode: forwards;
 }
 
